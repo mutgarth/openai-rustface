@@ -14,7 +14,7 @@ This repository provides a simple Rust client to interact with the OpenAI API. A
 
 ## usage
 
-use your_crate_name::OpenAi;
+use openai-rustface::OpenAi;
 
 ```
 #[tokio::main]
