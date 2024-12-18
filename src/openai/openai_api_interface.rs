@@ -26,18 +26,29 @@ struct Data {
 
 pub struct OpenAi {
     api_key: String,
+    endpoint: Option<String>
 }
 
 impl OpenAi {
 
     pub fn new(api_key: String) -> Self{
-        Self { api_key }
+        Self { 
+            api_key,
+            endpoint: None
+        }
+    }
+
+    pub fn set_endpoint(mut self, endpoint: String) -> Self {
+        self.endpoint = Some(endpoint);
+        self
     }
 
     pub async fn generate_embeddings(&self, text: &str, model: &str) -> Result<Vec<f32>, ApiError> {
 
         let client = reqwest::Client::new();
-        let embedding_endpoint = OpenAiEndpoints::Embeddings.endpoint();
+        
+        let embedding_endpoint = self.endpoint.as_deref()
+            .unwrap_or(OpenAiEndpoints::Embeddings.endpoint());
 
         let request_body: serde_json::Value = serde_json::json!({
             "input": text,
